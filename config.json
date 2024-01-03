@@ -1,0 +1,23 @@
+{
+    "modules": [
+        "login",
+        "sign_up",
+        "sign_up_2",
+        "sign_up_success",
+        "dashboard",
+        "suggestion_book",
+        "preference_book",
+        "splash_screen",
+        "preference_done",
+        "home"
+    ],
+    "module_directory_name": "module",
+    "experimental_mode": false,
+    "learning_mode": false,
+    "unfreezed": true,
+    "use_cubit": false,
+    "ignore_core_generator_for_directories": [
+        "lib/model",
+        "lib/models"
+    ]
+}
