@@ -9,8 +9,7 @@
         "preference_book",
         "splash_screen",
         "preference_done",
-        "home",
-        "test"
+        "home"
     ],
     "module_directory_name": "module",
     "experimental_mode": false,
