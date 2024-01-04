@@ -1,7 +1,20 @@
+import 'dart:io';
+
 import 'package:bookapp/core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Platform.isAndroid
+      ? await Firebase.initializeApp(
+          options: const FirebaseOptions(
+              apiKey: 'AIzaSyBmqUrW7ngWNbZ0PivBhUyT9DVPJ7Mx6YM',
+              appId: '1:963653775874:android:91ba2d179e133adbfc6d1b',
+              messagingSenderId: '963653775874',
+              projectId: 'bookspace-2b352'))
+      : await Firebase.initializeApp();
   runApp(const MainApp());
 }
 

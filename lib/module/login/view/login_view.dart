@@ -1,12 +1,46 @@
 import 'package:bookapp/core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  @override
   Widget build(BuildContext context) {
+    String email = "", password = "";
+    TextEditingController emailcontroller = TextEditingController();
+    TextEditingController passwordcontroller = TextEditingController();
+
+    final _formkey = GlobalKey<FormState>();
+
+    userLogin() async {
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        Get.to(const SignUpSuccessView());
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+            'No User Found for that email',
+            style: GoogleFonts.montserrat(fontSize: 20),
+          )));
+        } else if (e.code == 'wrong password') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+            'Wrong Password Provided by User',
+            style: GoogleFonts.montserrat(fontSize: 20),
+          )));
+        }
+      }
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -50,25 +84,48 @@ class LoginView extends StatelessWidget {
                     const SizedBox(
                       height: 16,
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(20),
-                        hintText: 'Email',
-                        border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(20),
-                        hintText: 'Password',
-                        border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(8)),
+                    Form(
+                      key: _formkey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Email';
+                              }
+                              return null;
+                            },
+                            controller: emailcontroller,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(20),
+                              hintText: 'Email',
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Password';
+                              }
+                              return null;
+                            },
+                            controller: passwordcontroller,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(20),
+                              hintText: 'Password',
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
@@ -90,10 +147,13 @@ class LoginView extends StatelessWidget {
                     ButtonBlue(
                       label: 'Sign In',
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const DashboardView()));
+                        if (_formkey.currentState!.validate()) {
+                          setState(() {
+                            email = emailcontroller.text;
+                            password = passwordcontroller.text;
+                          });
+                        }
+                        userLogin();
                       },
                     ),
                     const SizedBox(

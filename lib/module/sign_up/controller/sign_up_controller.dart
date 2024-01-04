@@ -5,7 +5,7 @@
 
 // class SignUpController extends State<SignUpView> {
 //     static late SignUpController instance;
-//     late SignUpView view;
+//     late Sign view;
 
 //     @override
 //     void initState() {
@@ -17,7 +17,7 @@
 //     void dispose() => super.dispose();
 
 //     @override
-//     Widget build(BuildContext context) => widget.build(context, this);
+//     Widget build(BuildContext context) => widget.build(context);
 // }
         
     
