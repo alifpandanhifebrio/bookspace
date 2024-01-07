@@ -19,19 +19,17 @@ class _SignUpViewState extends State<SignUpView> {
       email = "",
       password = "";
 
-  TextEditingController namecontroller = new TextEditingController();
-  TextEditingController gendercontroller = new TextEditingController();
-  TextEditingController birthdaycontroller = new TextEditingController();
-  TextEditingController usernamecontroller = new TextEditingController();
-  TextEditingController emailcontroller = new TextEditingController();
-  TextEditingController passwordcontroller = new TextEditingController();
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController gendercontroller = TextEditingController();
+  TextEditingController birthdaycontroller = TextEditingController();
+  TextEditingController usernamecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
 
   final _formkey = GlobalKey<FormState>();
 
   registration() async {
-    if (password != null &&
-        usernamecontroller.text != "" &&
-        emailcontroller.text != "") {
+    if (usernamecontroller.text != "" && emailcontroller.text != "") {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
@@ -40,7 +38,7 @@ class _SignUpViewState extends State<SignUpView> {
           'Registration Succesfully',
           style: GoogleFonts.montserrat(fontSize: 20),
         )));
-        Get.to(SignUpSuccessView());
+        Get.to(const SignUpSuccessView());
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -350,7 +348,7 @@ class _SignUpViewState extends State<SignUpView> {
                                       password = passwordcontroller.text;
                                     });
                                   }
-                                  registration(); 
+                                  registration();
                                   // Navigator.pushAndRemoveUntil(
                                   //   context,
                                   //   MaterialPageRoute(

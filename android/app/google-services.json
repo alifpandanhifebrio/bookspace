@@ -12,7 +12,20 @@
           "package_name": "com.alip.bookapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "963653775874-42l5dm9f98la7oh6f97kpjc3iouu4dka.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alip.bookapp",
+            "certificate_hash": "2626fdf7545c0c1a871b8a4d7b4f1ef70904dd60"
+          }
+        },
+        {
+          "client_id": "963653775874-937f6e52gvp80i8n7df00nk1pvapvps8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBmqUrW7ngWNbZ0PivBhUyT9DVPJ7Mx6YM"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963653775874-937f6e52gvp80i8n7df00nk1pvapvps8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

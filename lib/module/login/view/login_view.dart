@@ -1,4 +1,5 @@
 import 'package:bookapp/core.dart';
+import 'package:bookapp/module/service/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,14 +12,12 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  final formkey = GlobalKey<FormState>();
+  String email = "", password = "";
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String email = "", password = "";
-    TextEditingController emailcontroller = TextEditingController();
-    TextEditingController passwordcontroller = TextEditingController();
-
-    final _formkey = GlobalKey<FormState>();
-
     userLogin() async {
       try {
         await FirebaseAuth.instance
@@ -31,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
             'No User Found for that email',
             style: GoogleFonts.montserrat(fontSize: 20),
           )));
-        } else if (e.code == 'wrong password') {
+        } else if (e.code == 'wrong-password') {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
             'Wrong Password Provided by User',
@@ -46,7 +45,6 @@ class _LoginViewState extends State<LoginView> {
         children: [
           Container(
             alignment: Alignment.topCenter,
-            // width: MediaQuery.of(context).size.width,
             height: double.infinity,
             child: Image.asset(
               'assets/image/login.jpg',
@@ -85,7 +83,7 @@ class _LoginViewState extends State<LoginView> {
                       height: 16,
                     ),
                     Form(
-                      key: _formkey,
+                      key: formkey,
                       child: Column(
                         children: [
                           TextFormField(
@@ -147,17 +145,72 @@ class _LoginViewState extends State<LoginView> {
                     ButtonBlue(
                       label: 'Sign In',
                       onPressed: () {
-                        if (_formkey.currentState!.validate()) {
-                          setState(() {
-                            email = emailcontroller.text;
-                            password = passwordcontroller.text;
-                          });
+                        if (formkey.currentState!.validate()) {
+                          email = emailcontroller.text;
+                          password = passwordcontroller.text;
+                          userLogin();
                         }
-                        userLogin();
                       },
                     ),
                     const SizedBox(
                       height: 16.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 55,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.black),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Icon(Icons.phone_sharp),
+                                Text(
+                                  'Sign In with Phone',
+                                  style: GoogleFonts.roboto(fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16.0,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              AuthMethoods().signInWithGoogle(context);
+                            },
+                            child: Container(
+                              // width: MediaQuery.of(context).size.width,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(width: 1, color: Colors.black),
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Image.asset(
+                                    'assets/image/google.png',
+                                    width: 35,
+                                    height: 35,
+                                  ),
+                                  Text(
+                                    'Sign In with Google',
+                                    style: GoogleFonts.roboto(fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
