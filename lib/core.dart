@@ -17,6 +17,8 @@ export 'package:bookapp/module/preference_book/view/preference_book_view.dart';
 export 'package:bookapp/module/preference_book/widget/chip.dart';
 export 'package:bookapp/module/preference_done/controller/preference_done_controller.dart';
 export 'package:bookapp/module/preference_done/view/preference_done_view.dart';
+export 'package:bookapp/module/service/auth.dart';
+export 'package:bookapp/module/service/database.dart';
 export 'package:bookapp/module/sign_up/controller/sign_up_controller.dart';
 export 'package:bookapp/module/sign_up/view/sign_up_view.dart';
 export 'package:bookapp/module/sign_up_2/controller/sign_up_2_controller.dart';

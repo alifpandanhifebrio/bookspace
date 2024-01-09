@@ -9,6 +9,8 @@ class AuthMethoods {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   getCurrentUser() async {
+
+    
     return await auth.currentUser;
   }
 

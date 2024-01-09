@@ -3,12 +3,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PreferenceDoneView extends StatelessWidget {
+class PreferenceDoneView extends StatefulWidget {
   const PreferenceDoneView({super.key});
 
   @override
+  State<PreferenceDoneView> createState() => _PreferenceDoneViewState();
+}
+
+class _PreferenceDoneViewState extends State<PreferenceDoneView> {
+  int currentPageIndex = 0;
+  NavigationDestinationLabelBehavior labelBehavior =
+      NavigationDestinationLabelBehavior.alwaysShow;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // bottomNavigationBar: NavigationBar(
+      //   labelBehavior: labelBehavior,
+      //   selectedIndex: currentPageIndex,
+      //   onDestinationSelected: (int index) {
+      //     setState(() {
+      //       currentPageIndex = index;
+      //     });
+      //   },
+      //   destinations: const <Widget>[
+      //     NavigationDestination(
+      //       icon: Icon(Icons.explore),
+      //       label: 'Explore',
+      //     ),
+      //     NavigationDestination(
+      //       icon: Icon(Icons.commute),
+      //       label: 'Commute',
+      //     ),
+      //     NavigationDestination(
+      //       selectedIcon: Icon(Icons.bookmark),
+      //       icon: Icon(Icons.bookmark_border),
+      //       label: 'Saved',
+      //     ),
+      //   ],
+      // ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -45,7 +77,7 @@ class PreferenceDoneView extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return const HomeView();
+                          return HomeView();
                         },
                       ),
                       (route) => true,

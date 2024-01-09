@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../controller/home_controller.dart';
+
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
   Widget build(context, HomeController controller) {
     controller.view = this;
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 60, right: 32, left: 32),
