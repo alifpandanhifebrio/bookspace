@@ -1,5 +1,4 @@
 import 'package:bookapp/core.dart';
-import 'package:bookapp/module/service/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +11,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  bool _obscurePassword = true;
   final formkey = GlobalKey<FormState>();
   String email = "", password = "";
   TextEditingController emailcontroller = TextEditingController();
@@ -107,6 +107,7 @@ class _LoginViewState extends State<LoginView> {
                             height: 16.0,
                           ),
                           TextFormField(
+                            obscureText: _obscurePassword,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please Enter Password';
@@ -115,6 +116,16 @@ class _LoginViewState extends State<LoginView> {
                             },
                             controller: passwordcontroller,
                             decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                                child: Icon(_obscurePassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                              ),
                               contentPadding: const EdgeInsets.all(20),
                               hintText: 'Password',
                               border: OutlineInputBorder(

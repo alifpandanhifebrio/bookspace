@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -12,13 +13,13 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+  bool _obscurePassword = true;
   String name = "",
       gender = "",
       birhday = "",
       username = "",
       email = "",
       password = "";
-
   TextEditingController namecontroller = TextEditingController();
   TextEditingController gendercontroller = TextEditingController();
   TextEditingController birthdaycontroller = TextEditingController();
@@ -146,7 +147,23 @@ class _SignUpViewState extends State<SignUpView> {
                       TextField(
                         controller: birthdaycontroller,
                         decoration: InputDecoration(
-                          suffixIcon: const Icon(Icons.calendar_month_outlined),
+                          suffixIcon: GestureDetector(
+                              onTap: () async {
+                                DateTime? pickdate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2101),
+                                );
+                                if (pickdate != null) {
+                                  setState(() {
+                                    birthdaycontroller.text =
+                                        DateFormat('dd-MM-yyyy')
+                                            .format(pickdate);
+                                  });
+                                }
+                              },
+                              child: const Icon(Icons.calendar_month_outlined)),
                           contentPadding: const EdgeInsets.all(20),
                           hintText: 'Date of Birth',
                           border: OutlineInputBorder(
@@ -264,50 +281,62 @@ class _SignUpViewState extends State<SignUpView> {
                                     borderRadius: BorderRadius.circular(8)),
                               ),
                             ),
+                            const SizedBox(
+                              height: 16.0,
+                            ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Email';
+                                }
+                                return null;
+                              },
+                              controller: emailcontroller,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(20),
+                                hintText: 'Email',
+                                border: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16.0,
+                            ),
+                            TextFormField(
+                              obscureText: _obscurePassword,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Password';
+                                }
+                                return null;
+                              },
+                              controller: passwordcontroller,
+                              decoration: InputDecoration(
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
+                                  child: Icon(_obscurePassword
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                ),
+                                contentPadding: const EdgeInsets.all(20),
+                                hintText: 'Password',
+                                border: OutlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16.0,
+                            ),
                           ],
                         ),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter Email';
-                          }
-                          return null;
-                        },
-                        controller: emailcontroller,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(20),
-                          hintText: 'Email',
-                          border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter Password';
-                          }
-                          return null;
-                        },
-                        controller: passwordcontroller,
-                        decoration: InputDecoration(
-                          suffixIcon: const Icon(Icons.remove_red_eye_outlined),
-                          contentPadding: const EdgeInsets.all(20),
-                          hintText: 'Password',
-                          border: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

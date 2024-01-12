@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../controller/home_controller.dart';
-
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -13,7 +11,7 @@ class HomeView extends StatefulWidget {
     controller.view = this;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 60, right: 32, left: 32),
+        padding: const EdgeInsets.only(top: 45, right: 32, left: 32),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -219,137 +217,147 @@ class HomeView extends StatefulWidget {
               SizedBox(
                 height: 300,
                 child: ListView.builder(
+                    itemExtent: 140,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    shrinkWrap: true,
+                    itemCount: 10,
+                    // shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Card(
-                            child: InkWell(
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(const BookDetailView());
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Card(
                               child: Container(
                                 height: 277,
                                 width: 128,
                                 decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 1, color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: Column(
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        Image.asset('assets/image/book1.jpg'),
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: Container(
-                                            height: 24,
-                                            width: 55,
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                            child: Center(
-                                              child: Text(
-                                                'P: 247/312',
-                                                style: GoogleFonts.montserrat(
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Column(
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Image.asset('assets/image/book1.jpg'),
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            child: Container(
+                                              height: 24,
+                                              width: 55,
+                                              color:
+                                                  Colors.black.withOpacity(0.5),
+                                              child: Center(
+                                                child: Text(
+                                                  'P: 247/312',
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          child: Container(
-                                              padding: const EdgeInsets.only(
-                                                  top: 6, left: 8),
-                                              height: 24,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              decoration: const BoxDecoration(
-                                                gradient: LinearGradient(
-                                                    colors: [
-                                                      Color(0xff4743E7),
-                                                      Color(0xff50C8FC)
-                                                    ],
-                                                    begin: Alignment.centerLeft,
-                                                    end: Alignment.centerRight),
-                                              ),
-                                              child: Text(
-                                                'Best On Philosophy',
-                                                style: GoogleFonts.montserrat(
-                                                    color: Colors.white,
-                                                    fontSize: 8,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.only(
-                                          top: 12, right: 12, left: 12),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Meditations',
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600),
+                                          Positioned(
+                                            bottom: 0,
+                                            child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 6, left: 8),
+                                                height: 24,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                decoration: const BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Color(0xff4743E7),
+                                                        Color(0xff50C8FC)
+                                                      ],
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end: Alignment
+                                                          .centerRight),
+                                                ),
+                                                child: Text(
+                                                  'Best On Philosophy',
+                                                  style: GoogleFonts.montserrat(
+                                                      color: Colors.white,
+                                                      fontSize: 8,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                )),
                                           ),
-                                          const SizedBox(
-                                            height: 4.0,
-                                          ),
-                                          Text(
-                                            'Marcus Aurelius',
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          const SizedBox(
-                                            height: 8.0,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  'assets/image/star.svg'),
-                                              Text(
-                                                '4.9',
-                                                style: GoogleFonts.montserrat(
-                                                    fontSize: 9,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              Text(
-                                                '|',
-                                                style: GoogleFonts.montserrat(
-                                                    fontSize: 9,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              Text(
-                                                '10k reader',
-                                                style: GoogleFonts.montserrat(
-                                                    fontSize: 9,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              )
-                                            ],
-                                          )
                                         ],
                                       ),
-                                    )
-                                  ],
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            top: 12, right: 12, left: 12),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Meditations',
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(
+                                              height: 4.0,
+                                            ),
+                                            Text(
+                                              'Marcus Aurelius',
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            const SizedBox(
+                                              height: 8.0,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    'assets/image/star.svg'),
+                                                Text(
+                                                  '4.9',
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 9,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '|',
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 9,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '10k reader',
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 9,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     }),
               )
