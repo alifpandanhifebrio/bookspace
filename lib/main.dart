@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:bookapp/core.dart';
+import 'package:bookapp/widgets/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +30,19 @@ class MainApp extends StatelessWidget {
       title: 'Bookspace',
       debugShowCheckedModeBanner: false,
       home: const SplashScreenView(
-        child: LoginView(),
+        child: Wrapper(),
       ),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/second':
+            return PageTransition(
+                child: const SplashScreenView(),
+                type: PageTransitionType.theme,
+                settings: settings,
+                reverseDuration: const Duration(seconds: 3));
+        }
+        return null;
+      },
     );
   }
 }

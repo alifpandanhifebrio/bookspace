@@ -1,7 +1,10 @@
 import 'package:bookapp/core.dart';
+import 'package:bookapp/service/auth.dart';
+import 'package:bookapp/widgets/regex.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -11,35 +14,15 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  final FirebaseAuthService _auth = FirebaseAuthService();
   bool _obscurePassword = true;
   final formkey = GlobalKey<FormState>();
   String email = "", password = "";
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  bool _isSigning = false;
   @override
   Widget build(BuildContext context) {
-    userLogin() async {
-      try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        Get.to(const SignUpSuccessView());
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-            'No User Found for that email',
-            style: GoogleFonts.montserrat(fontSize: 20),
-          )));
-        } else if (e.code == 'wrong-password') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-            'Wrong Password Provided by User',
-            style: GoogleFonts.montserrat(fontSize: 20),
-          )));
-        }
-      }
-    }
-
     return Scaffold(
       body: Stack(
         children: [
@@ -84,14 +67,19 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Form(
                       key: formkey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
                         children: [
                           TextFormField(
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter Email';
+                              if (!CRegex.isValidEmail(value)) {
+                                return "Email tidak sesuai";
                               }
                               return null;
+                              // if (value == null || value.isEmpty) {
+                              //   return 'Please Enter Email';
+                              // }
+                              // return null;
                             },
                             controller: emailcontroller,
                             decoration: InputDecoration(
@@ -109,10 +97,14 @@ class _LoginViewState extends State<LoginView> {
                           TextFormField(
                             obscureText: _obscurePassword,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter Password';
+                              if (!CRegex.isOwaspPassword(value)) {
+                                return "Password Tidak Sesuai";
                               }
                               return null;
+                              // if (value == null || value.isEmpty) {
+                              //   return 'Please Enter Password';
+                              // }
+                              // return null;
                             },
                             controller: passwordcontroller,
                             decoration: InputDecoration(
@@ -155,6 +147,12 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     ButtonBlue(
                       label: 'Sign In',
+                      child: _isSigning
+                          ? const CircularProgressIndicator(
+                              strokeAlign: -3,
+                              color: Colors.white,
+                            )
+                          : const Text('Sign In'),
                       onPressed: () {
                         if (formkey.currentState!.validate()) {
                           email = emailcontroller.text;
@@ -260,4 +258,55 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
+
+  void userLogin() async {
+    setState(() {
+      _isSigning = true;
+    });
+    String email = emailcontroller.text;
+    String password = passwordcontroller.text;
+
+    User? user = await _auth.signInWithEmailAndPassword(email, password);
+
+    setState(() {
+      _isSigning = false;
+    });
+
+    if (user != null) {
+      print("User is succesfully signed ind");
+      Navigator.pushAndRemoveUntil(
+          context,
+          PageTransition(
+              child: const SuggestionBookView(),
+              type: PageTransitionType.rightToLeft),
+          (Route<dynamic> route) => false);
+    } else {
+      print("Some Error Occured");
+    }
+  }
+
+  // void userLogin() async {
+  //   setState(() {
+  //     _isSigning = true;
+  //   });
+  //   try {
+  //     await FirebaseAuth.instance
+  //         .signInWithEmailAndPassword(email: email, password: password);
+  //     Get.to(const SignUpSuccessView());
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'user-not-found') {
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //           content: Text(
+  //         'No User Found for that email',
+  //         style: GoogleFonts.montserrat(fontSize: 20),
+  //       )));
+  //     } else if (e.code == 'wrong-password') {
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //           content: Text(
+  //         'Wrong Password Provided by User',
+  //         style: GoogleFonts.montserrat(fontSize: 20),
+  //       )));
+  //     }
+  //   }
+  // }
 }

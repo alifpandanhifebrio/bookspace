@@ -1,13 +1,16 @@
 import 'package:bookapp/core.dart';
+import 'package:bookapp/service/auth.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
   Widget build(context, HomeController controller) {
+    final auth = FirebaseAuthService();
     controller.view = this;
     return Scaffold(
       body: Padding(
@@ -17,24 +20,47 @@ class HomeView extends StatefulWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                text: TextSpan(
-                  text: 'Book',
-                  style: GoogleFonts.montserrat(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  children: [
-                    TextSpan(
-                      text: 'Space.',
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: 'Book',
                       style: GoogleFonts.montserrat(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xff1F73D6),
-                      ),
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: 'Space.',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xff1F73D6),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  TextButton(
+                      onPressed: () async {
+                        await auth.signOut();
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            PageTransition(
+                                child: const LoginView(),
+                                type: PageTransitionType.fade),
+                            (Route<dynamic> route) => false);
+                      },
+                      child: Text(
+                        'Logout',
+                        style: GoogleFonts.montserrat(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ))
+                ],
               ),
               const SizedBox(
                 height: 24.0,

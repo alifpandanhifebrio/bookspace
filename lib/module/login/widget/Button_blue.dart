@@ -7,9 +7,11 @@ class ButtonBlue extends StatelessWidget {
   final double? width;
   final Color? color;
   final Icon? icon;
+  final Widget? child;
 
   const ButtonBlue(
       {Key? key,
+      this.child,
       required this.label,
       required this.onPressed,
       this.width,
@@ -33,11 +35,12 @@ class ButtonBlue extends StatelessWidget {
             backgroundColor: const Color(0xff1F73D6),
             foregroundColor: Colors.white),
         onPressed: () => onPressed(),
-        child: Text(
-          label,
-          style:
-              GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
-        ),
+        child: child
+        // Text(
+        //   label,
+        //   style:
+        //       GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
+        // ),
       ),
     );
   }

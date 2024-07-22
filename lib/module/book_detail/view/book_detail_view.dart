@@ -293,18 +293,6 @@ class BookDetailView extends StatefulWidget {
         ),
       ),
     );
-    WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("data"),
-          leading: IconButton(
-            icon: const Icon(Icons.ac_unit),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
-      ),
-    );
   }
 
   @override
